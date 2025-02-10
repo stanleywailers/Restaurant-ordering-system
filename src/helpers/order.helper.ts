@@ -3,6 +3,8 @@ import Order from "../models/order";
 import OrderItem from "../models/orderItem";
 import Dish from "../models/dish";
 import User from "../models/user";
+import { Json } from "sequelize/types/lib/utils";
+import { JSON } from "sequelize";
 
 // The placeOrderHelper function is responsible for handling the creation of a new order.
 export async function placeOrderHelper(req: Request, res: Response) {
@@ -84,12 +86,19 @@ export async function placeOrderHelper(req: Request, res: Response) {
 }
 
 // The viewOrderHelper function retrieves a specific order by its ID and includes the associated order items and dishes.
-export async function viewOrderHelper(req: Request, res: Response) {
+export async function viewOrdersHelper(req: Request, res: Response) {
     try {
-        const { id } = req.params;
+        
+        console.log(req.userId,'PARAMS')
+        const userId = req.params; // Obtén el ID del usuario autenticado
+
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
 
         // Find the order by ID and include the associated order items and dishes
-        const order = await Order.findByPk(id, {
+        const order = await Order.findAll( {
+            where: { user_id: req.userId },
             include: [
                 {
                     model: OrderItem,
@@ -104,7 +113,7 @@ export async function viewOrderHelper(req: Request, res: Response) {
         });
 
         if (!order) {
-            return res.status(404).json({ message: `Order with ID ${id} not found` });
+            return res.status(404).json({ message: `Order with ID  not found` });
         }
 
         res.json({ order });

@@ -24,7 +24,8 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
             if (err){
                 res.status(401).json({ status: "error", code: "unauthorized" });
             }else if (decoded){
-                req.userId = decoded.id;
+              
+                req.userId = decoded.userId;
                 next();
             }
         });

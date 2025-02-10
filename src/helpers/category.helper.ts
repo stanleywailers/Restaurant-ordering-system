@@ -4,6 +4,7 @@ import fs from 'fs';
 import multer from "multer";
 import path from "path";
 import {getImageUrl} from "./image.helper";
+import Dish from "../models/dish";
 
 // configures how the files are gonna be stored
 const multerConfig = multer.diskStorage({
@@ -63,15 +64,19 @@ export const getAllCategoriesHelper = async (req: Request, res: Response) => {
     try {
         const categories: Category[] = await Category.findAll({
             limit: +req.params.limit,
-            offset: +req.params.offset}); // Retrieve all categories from the database
+            offset: +req.params.offset,
+            include: [{ model: Dish }],
+        }); // Retrieve all categories from the database
         const data: { // Create an array of category data objects with selected properties
             image: string | undefined;
             name: string;
             id: string;
+            dishes?:Dish[];
         }[] = categories.map((category) => ({
-            id: category.name,
+            id: category.id ? category.id.toString() : "",
             name: category.name,
             image: getImageUrl(category.image, "category"), // Get the URL of the category image using getImageUrl function
+            dishes:category?.dishes
         }));
         res.json(data); // Send the array of category data objects as the response
     } catch (error) {
@@ -93,6 +98,7 @@ export const getCategoryByIdHelper = async (req: Request, res: Response) => {
             id: category.id,
             name: category.name,
             image: getImageUrl(category.image, "category"),
+            
         };
         // Return category details in the response
         res.status(200).send({ Data });

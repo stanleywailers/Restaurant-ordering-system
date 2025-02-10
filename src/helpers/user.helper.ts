@@ -62,8 +62,10 @@ export async function loginHelper (req: Request, res: Response) {
         });
     }
 }
+
 export async function registerHelper (req: Request, res: Response) {
     const {full_name, email, password} = req?.body;
+    console.log(req?.body)
     const helperStatus = await authHelpers(res,req,full_name, email, password);
     if (helperStatus == true) {
         /**

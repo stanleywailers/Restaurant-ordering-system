@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {
     placeOrderHelper,
-    viewOrderHelper,
+    viewOrdersHelper,
     updateOrderStatusHelper,
     completeOrderHelper,
 } from "../helpers/order.helper";
@@ -13,7 +13,7 @@ export const placeOrder = async (req: Request, res: Response) => {
 
 // The viewOrder function handles the retrieval of an existing order.
 export const viewOrder = async (req: Request, res: Response) => {
-    await viewOrderHelper(req, res); // Call the viewOrderHelper function to perform the order retrieval logic.
+    await viewOrdersHelper(req, res); // Call the viewOrderHelper function to perform the order retrieval logic.
 };
 
 // The updateOrderStatus function updates the status of an existing order based on its ID.
