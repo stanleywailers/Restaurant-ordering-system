@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
+import Dish from "../models/dish";
 import Order from "../models/order";
 import OrderItem from "../models/orderItem";
-import Dish from "../models/dish";
 import User from "../models/user";
-import { Json } from "sequelize/types/lib/utils";
-import { JSON } from "sequelize";
 
 // The placeOrderHelper function is responsible for handling the creation of a new order.
 export async function placeOrderHelper(req: Request, res: Response) {
@@ -89,7 +87,7 @@ export async function placeOrderHelper(req: Request, res: Response) {
 export async function viewOrdersHelper(req: Request, res: Response) {
     try {
         
-        console.log(req.userId,'PARAMS')
+        
         const userId = req.params; // Obtén el ID del usuario autenticado
 
         if (!userId) {
