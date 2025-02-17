@@ -1,29 +1,42 @@
 import { Request, Response } from "express";
+import { Messages } from "../constants/messages";
 import Dish from "../models/dish";
 import Order from "../models/order";
 import OrderItem from "../models/orderItem";
+import TableModel from "../models/table";
 import User from "../models/user";
 
 // The placeOrderHelper function is responsible for handling the creation of a new order.
 export async function placeOrderHelper(req: Request, res: Response) {
     try {
-        const { user_id, items } = req.body;
+        const { user_id, items, table_id , notes, customer_name} = req.body;
 
         // Check if the user exists
         const user = await User.findByPk(user_id);
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: Messages.USER_NOT_FOUND });
+        }
+
+        const table = await TableModel.findByPk(table_id);
+        if (!table?.isAvailable ) {
+          return res.status(404).json({ message: Messages.UNVAIALABLE_TABLE });
         }
 
         // Create a new order for the user
         const order = await Order.create({
             user_id: user_id,
-            status: "pending",
+            status: "active",
             total_amount: 0, // The total amount will be calculated and updated later
+            subtotal: 0,
+            table_id: table_id,
+            customer_name: customer_name,
+            notes: notes,
+            
+            
         });
 
         // Calculate the total amount and create order items
-        let totalAmount = 0;
+        let subtotal = 0;
         for (const item of items) {
             const { dish_id, quantity } = item;
 
@@ -40,11 +53,7 @@ export async function placeOrderHelper(req: Request, res: Response) {
                 return res.status(400).json({ message: "Quantity must be a positive integer" });
             }
 
-            // Validate quantity to be less than or equal to 5 (you can adjust the limit as needed)
-            if (quantity > 5) {
-                order.destroy()
-                return res.status(400).json({ message: "Quantity cannot exceed 5" });
-            }
+           
 
             // Check if the dish price is defined
             if (dish.price === undefined) {
@@ -67,13 +76,17 @@ export async function placeOrderHelper(req: Request, res: Response) {
                 dish_id,
                 quantity,
                 price,
+
             });
 
-            totalAmount += price;
+            subtotal += price;
         }
 
         // Update the total amount for the order
-        order.total_amount = totalAmount;
+        
+        order.subtotal =  subtotal;
+        order.tip= 0.1 * subtotal;
+        order.total_amount = subtotal + order.tip;
         await order.save();
 
         res.status(201).json({ message: "Order placed successfully", orderId: order.id });
@@ -88,15 +101,17 @@ export async function viewOrdersHelper(req: Request, res: Response) {
     try {
         
         
-        const userId = req.params; // Obtén el ID del usuario autenticado
+       
+      
 
-        if (!userId) {
+        if (!req.userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
         // Find the order by ID and include the associated order items and dishes
         const order = await Order.findAll( {
             where: { user_id: req.userId },
+        
             include: [
                 {
                     model: OrderItem,
@@ -106,6 +121,9 @@ export async function viewOrdersHelper(req: Request, res: Response) {
                             attributes: ["id", "name", "price"],
                         },
                     ],
+                },{
+                    model:User ,  
+                    attributes: ["id", "full_name", "email"],
                 },
             ],
         });
