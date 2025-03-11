@@ -1,26 +1,23 @@
 {
   "development": {
     "username": "root",
-    "password": "MyDemoDB123@11",
-    "database": "restaurant",
+    "password": "Home2020.",
+    "database": "elconchalito",
     "host": "localhost",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": "Home2020.",
+    "database": "elconchalito",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
+    "password": "Home2020.",
+    "database": "elconchalito",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   }
 }

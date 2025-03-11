@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import User from "../models/user";
 import { loginHelper, registerHelper } from "../helpers/user.helper";
+import User from "../models/user";
 import { getData } from "../validations/validator";
 
 // Register a new user
@@ -18,7 +18,7 @@ export const getUser = async (req: Request, res: Response) => {
     try {
         // Call the getData function to retrieve user data from the User model
         await getData(req, res, User);
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ message: error.message }); // Send error message if an error occurs
     }
 };

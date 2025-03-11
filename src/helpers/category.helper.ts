@@ -1,9 +1,9 @@
-import {Request, Response} from "express";
-import  Category  from '../models/category';
+import { Request, Response } from "express";
 import fs from 'fs';
 import multer from "multer";
 import path from "path";
-import {getImageUrl} from "./image.helper";
+import Category from '../models/category';
+import { getImageUrl } from "./image.helper";
 
 // configures how the files are gonna be stored
 const multerConfig = multer.diskStorage({
@@ -11,6 +11,7 @@ const multerConfig = multer.diskStorage({
                            callback: (error: Error | null, destination: string) => void) {
         callback(null, 'uploads/categories');
     },
+    // @ts-ignore
     filename: function (req: Request, file: Express.Multer.File,
                         callback: (error: Error | null, filename: string) => void) {
         callback(null, Date.now() + path.extname(file.originalname));
@@ -25,6 +26,7 @@ const upload = multer({
 // Create a new category with image upload support
 export const createCategoryHelper = async (req: Request, res: Response) => {
     // Use the multer middleware to handle file upload
+    // @ts-ignore
     upload.single('picture')(req, res, async function (err) {
         if (err) {
             return res.status(400).json({ message: 'Error uploading image', timestamp: new Date() });
@@ -104,6 +106,7 @@ export const getCategoryByIdHelper = async (req: Request, res: Response) => {
 // Update an existing category, including the image if provided
 export const updateCategoryHelper = async (req: Request, res: Response) => {
     // Use the multer middleware to handle file upload
+    // @ts-ignore
     upload.single('picture')(req, res, async function (err) {
         if (err) {
             return res.status(400).json({ message: 'Error uploading image', timestamp: new Date() });

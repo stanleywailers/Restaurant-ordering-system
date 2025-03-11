@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import {
-    placeOrderHelper,
-    viewOrderHelper,
-    updateOrderStatusHelper,
     completeOrderHelper,
+    placeOrderHelper,
+    updateOrderStatusHelper,
+    viewOrderHelper,
 } from "../helpers/order.helper";
 
 // The placeOrder function is responsible for handling the creation of a new order.
@@ -20,7 +20,7 @@ export const viewOrder = async (req: Request, res: Response) => {
 export const updateOrderStatus = async (req: Request, res: Response) => {
     try {
         await updateOrderStatusHelper(req, res); // Call the updateOrderStatusHelper function to update the order status by ID.
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ message: error.message }); // If an error occurs, send an error message back to the client with a status code of 400.
     }
 };
@@ -29,7 +29,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 export const completeOrder = async (req: Request, res: Response) => {
     try {
         await completeOrderHelper(req, res); // Call the completeOrderHelper function to mark the order as completed.
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ message: error.message }); // If an error occurs, send an error message back to the client with a status code of 400.
     }
 };

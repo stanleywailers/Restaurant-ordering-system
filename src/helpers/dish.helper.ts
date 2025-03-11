@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import  Category  from '../models/category';
-import Dish from "../models/dish";
-import multer from "multer";
 import fs from "fs";
+import multer from "multer";
 import path from "path";
-import {getImageUrl} from "./image.helper";
+import Category from '../models/category';
+import Dish from "../models/dish";
+import { getImageUrl } from "./image.helper";
 
 // configures how the files are gonna be stored
 const multerConfig = multer.diskStorage({
