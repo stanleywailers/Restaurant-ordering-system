@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Restaurant-ordering-system
-=======
 Food Ordering System
 ====================
 
@@ -186,4 +183,3 @@ Conclusion
 
 This README file provides an overview of the Food Ordering System, its features, setup instructions, API endpoints, reporting functionality, data validation, error handling, and information on how to contribute. Please customize it further with specific details relevant to your project.
 
->>>>>>> 9469ea5 (Initial commit)

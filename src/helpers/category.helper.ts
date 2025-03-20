@@ -3,6 +3,7 @@ import fs from 'fs';
 import multer from "multer";
 import path from "path";
 import Category from '../models/category';
+import Dish from "../models/dish";
 import { getImageUrl } from "./image.helper";
 
 // configures how the files are gonna be stored
@@ -64,6 +65,7 @@ export const createCategoryHelper = async (req: Request, res: Response) => {
 export const getAllCategoriesHelper = async (req: Request, res: Response) => {
     try {
         const categories: Category[] = await Category.findAll({
+            include:[{model:Dish}],
             limit: +req.params.limit,
             offset: +req.params.offset}); // Retrieve all categories from the database
         const data: { // Create an array of category data objects with selected properties
@@ -73,7 +75,14 @@ export const getAllCategoriesHelper = async (req: Request, res: Response) => {
         }[] = categories.map((category) => ({
             id: category.name,
             name: category.name,
-            image: getImageUrl(category.image, "category"), // Get the URL of the category image using getImageUrl function
+            image: getImageUrl(category.image, "category"),
+            dishes: category.dishes?.map((dish) => ({
+               id:dish.id,
+               name:dish.name,
+               price:dish.price,
+               image: getImageUrl(dish.image, "dish"),
+            })) || []
+            // Get the URL of the category image using getImageUrl function
         }));
         res.json(data); // Send the array of category data objects as the response
     } catch (error) {

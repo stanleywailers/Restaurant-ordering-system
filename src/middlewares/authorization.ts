@@ -12,6 +12,7 @@ declare global {
 const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
 
     let token : any = req.headers["authorization"];
+    console.log(token, String(process.env.JWT_SECRET))
     let arr: string[] = [];
     if(!token){
         res.send("Need a token!");
@@ -22,8 +23,9 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
             if (err) {
                 return res.status(401).json({ status: "error", code: "unauthorized" });
             }
-            if (decoded && typeof decoded === "object" && "id" in decoded) {
-                req.userId = (decoded as JwtPayload).id;
+          
+            if (decoded && typeof decoded === "object" && "userId" in decoded) {
+                req.userId = (decoded as JwtPayload).userId;
                 next();
             } else {
                 return res.status(401).json({ status: "error", code: "invalid_token" });

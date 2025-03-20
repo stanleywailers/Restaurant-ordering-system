@@ -3,7 +3,8 @@ import {
     completeOrder,
     placeOrder,
     updateOrderStatus,
-    viewOrder
+    viewOrder,
+    viewOrders
 } from "../services/order.service";
 
 // Controller function to create a new order
@@ -12,6 +13,14 @@ export const placeOrderController = async (req: Request, res: Response) => {
         await placeOrder(req, res); // Call the placeOrder service function to create a new order
     } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
+    }
+};
+
+export const viewOrdersController = async (req: Request, res: Response) => {
+    try {
+        await viewOrders(req, res); 
+    } catch (error:any) {
+        res.status(400).send({ error: error.message, timestamp: new Date() }); 
     }
 };
 
