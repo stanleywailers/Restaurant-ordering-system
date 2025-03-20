@@ -3,8 +3,7 @@ import {
     completeOrderHelper,
     placeOrderHelper,
     updateOrderStatusHelper,
-    viewOrderHelper,
-    viewOrdersHelper,
+    viewOrdersHelper
 } from "../helpers/order.helper";
 
 // The placeOrder function is responsible for handling the creation of a new order.
@@ -14,7 +13,7 @@ export const placeOrder = async (req: Request, res: Response) => {
 
 // The viewOrder function handles the retrieval of an existing order.
 export const viewOrder = async (req: Request, res: Response) => {
-    await viewOrderHelper(req, res); // Call the viewOrderHelper function to perform the order retrieval logic.
+    await viewOrdersHelper(req, res); // Call the viewOrderHelper function to perform the order retrieval logic.
 };
 
 export const viewOrders = async (req: Request, res: Response) => {

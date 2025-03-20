@@ -1,7 +1,10 @@
+
 export const placeOrderSchema = {
     type: 'object',
     properties: {
         user_id: { type: 'integer', minimum: 1 }, // Assuming user_id is a positive integer
+       table_name: { type: 'string', minLength: 1 },
+       customer_name: { type: 'string', minLength: 1 },
         items: {
             type: 'array',
             items: {
@@ -14,7 +17,7 @@ export const placeOrderSchema = {
             },
         },
     },
-    required: ['user_id', 'items'],
+    required: ['user_id', 'items', 'table', 'customer_name'],
 };
 
 export const orderStatusSchema = {

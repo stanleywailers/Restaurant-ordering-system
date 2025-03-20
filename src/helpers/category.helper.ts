@@ -67,21 +67,19 @@ export const getAllCategoriesHelper = async (req: Request, res: Response) => {
         const categories: Category[] = await Category.findAll({
             include:[{model:Dish}],
             limit: +req.params.limit,
-            offset: +req.params.offset}); // Retrieve all categories from the database
+            offset: +req.params.offset,
+           
+        }); // Retrieve all categories from the database
         const data: { // Create an array of category data objects with selected properties
             image: string | undefined;
             name: string;
             id: string;
+            dishes?:Dish[];
         }[] = categories.map((category) => ({
-            id: category.name,
+            id: category.id ? category.id.toString() : "",
             name: category.name,
             image: getImageUrl(category.image, "category"),
-            dishes: category.dishes?.map((dish) => ({
-               id:dish.id,
-               name:dish.name,
-               price:dish.price,
-               image: getImageUrl(dish.image, "dish"),
-            })) || []
+            dishes: category.dishes
             // Get the URL of the category image using getImageUrl function
         }));
         res.json(data); // Send the array of category data objects as the response
@@ -104,6 +102,7 @@ export const getCategoryByIdHelper = async (req: Request, res: Response) => {
             id: category.id,
             name: category.name,
             image: getImageUrl(category.image, "category"),
+            
         };
         // Return category details in the response
         res.status(200).send({ Data });

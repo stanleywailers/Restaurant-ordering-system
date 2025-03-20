@@ -21,7 +21,7 @@ router.patch("/id/:id/status", authentication.verifyJWT, validateSchemaMiddlewar
     updateOrderStatusController);
 
 // Get a specific order by ID
-router.get("/id/:id", authentication.verifyJWT, viewOrderController);
+router.get("/orders", authentication.verifyJWT, viewOrderController);
 
 router.get("/orders", authentication.verifyJWT, viewOrdersController);
 // Mark an order as complete

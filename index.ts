@@ -1,12 +1,13 @@
-import {database} from "./config/database";
 import express from "express";
-import {userRoutes} from "./src/routes/user.routes";
-import {categoryRoutes} from "./src/routes/category.routes";
-import {dishRoutes} from "./src/routes/dish.routes";
-import {ratingRoutes} from "./src/routes/rating.routes";
-import {orderRoutes} from "./src/routes/order.routes";
-import {reportRoutes} from "./src/routes/report.routes";
-import {taskRoutes} from "./src/routes/task.routes";
+import { database } from "./config/database";
+import { categoryRoutes } from "./src/routes/category.routes";
+import { dishRoutes } from "./src/routes/dish.routes";
+import { orderRoutes } from "./src/routes/order.routes";
+import { ratingRoutes } from "./src/routes/rating.routes";
+import { reportRoutes } from "./src/routes/report.routes";
+import { tableRoutes } from "./src/routes/table.routes";
+import { taskRoutes } from "./src/routes/task.routes";
+import { userRoutes } from "./src/routes/user.routes";
 
 
 (async () => {
@@ -70,6 +71,7 @@ import {taskRoutes} from "./src/routes/task.routes";
     app.use("/order", orderRoutes);
     app.use("/report", reportRoutes);
     app.use("/task", taskRoutes);
+    app.use("/table", tableRoutes);
 
 
     /**
