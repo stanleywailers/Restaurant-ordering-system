@@ -1,5 +1,5 @@
-import {BuildOptions, Model} from "sequelize";
-import {Request, Response} from "express";
+import { Request, Response } from "express";
+import { BuildOptions, Model } from "sequelize";
 
 /**
  * create a static type representation of the model
@@ -41,7 +41,7 @@ export async function getData (req: Request, res: Response, ModelName: ModelStat
             limit: +req.params.limit,
             offset: +req.params.offset});
         res.status(200).send(data); //send User Roles
-    } catch (error) {
+    } catch (error:any) {
         await errorMessage(req, res, error.message);
     }
 }

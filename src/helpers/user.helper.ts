@@ -1,8 +1,8 @@
-import {Request, Response} from "express";
-import User from "../models/user";
-import {isAllPresent} from "../validations/validator";
 import bcrypt from "bcrypt";
-import {createNewToken} from "./tokenGenerator";
+import { Request, Response } from "express";
+import User from "../models/user";
+import { isAllPresent } from "../validations/validator";
+import { createNewToken } from "./tokenGenerator";
 
 // Set the number of salt rounds for bcrypt
 const saltRounds = 10;
@@ -31,7 +31,7 @@ export async function authHelpers(res: Response,req: Request,full_name: string,
             }
         }
         return status;
-    } catch (error) {
+    } catch (error:any) {
         /**
          * Error message
          */
@@ -53,7 +53,7 @@ export async function loginHelper (req: Request, res: Response) {
                     const token = createNewToken(user);
                     res.send({token: token, userID: user.id, full_name: user.full_name,
                         email: user.email}); //generate token if credentials are correct
-                }catch (error) { res.status(400).send({message: error.message});}
+                }catch (error:any) { res.status(400).send({message: error.message});}
             } else {
                 res.status(401).send({message: "Password is Incorrect!, " +
                         "Please try again."});//error message if password is incorrect
@@ -80,7 +80,7 @@ export async function registerHelper (req: Request, res: Response) {
                     password: hashedPassword});
                 const token = createNewToken(newUser); //Create token
                 res.status(201).send({message: "Account created successfully", token: token}); //success message
-            }catch (error) { res.status(400).send({message: error.message});}
+            }catch (error:any) { res.status(400).send({message: error.message});}
         } else {
             if (password.length <= 2) { //Error message if password length is short
                 res.status(400).send({message: "Password is short!"});

@@ -1,17 +1,26 @@
 import { Request, Response } from "express";
 import {
+    completeOrder,
     placeOrder,
-    viewOrder,
     updateOrderStatus,
-    completeOrder
+    viewOrder,
+    viewOrders
 } from "../services/order.service";
 
 // Controller function to create a new order
 export const placeOrderController = async (req: Request, res: Response) => {
     try {
         await placeOrder(req, res); // Call the placeOrder service function to create a new order
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
+    }
+};
+
+export const viewOrdersController = async (req: Request, res: Response) => {
+    try {
+        await viewOrders(req, res); 
+    } catch (error:any) {
+        res.status(400).send({ error: error.message, timestamp: new Date() }); 
     }
 };
 
@@ -19,7 +28,7 @@ export const placeOrderController = async (req: Request, res: Response) => {
 export const viewOrderController = async (req: Request, res: Response) => {
     try {
         await viewOrder(req, res); // Call the viewOrder service function to view an existing order
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };
@@ -28,7 +37,7 @@ export const viewOrderController = async (req: Request, res: Response) => {
 export const updateOrderStatusController = async (req: Request, res: Response) => {
     try {
         await updateOrderStatus(req, res); // Call the updateOrderStatus service function to update the order status
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };
@@ -37,7 +46,7 @@ export const updateOrderStatusController = async (req: Request, res: Response) =
 export const completeOrderController = async (req: Request, res: Response) => {
     try {
         await completeOrder(req, res); // Call the completeOrder service function to mark the order as completed
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };

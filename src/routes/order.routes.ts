@@ -1,14 +1,15 @@
-import {
-    placeOrderController,
-    viewOrderController,
-    updateOrderStatusController,
-    completeOrderController
-} from "../controllers/order.controller";
 import express from "express";
+import {
+    completeOrderController,
+    placeOrderController,
+    updateOrderStatusController,
+    viewOrderController,
+    viewOrdersController
+} from "../controllers/order.controller";
+import { validateSchemaMiddleware } from "../middlewares/ajv-handler";
+import { orderStatusSchema, placeOrderSchema } from "../schema/order.schema";
 const router = express.Router();
 const authentication = require('../middlewares/authorization');
-import {validateSchemaMiddleware} from "../middlewares/ajv-handler";
-import {placeOrderSchema, orderStatusSchema} from "../schema/order.schema";
 
 // Routes for handling different order operations
 
@@ -22,6 +23,7 @@ router.patch("/id/:id/status", authentication.verifyJWT, validateSchemaMiddlewar
 // Get a specific order by ID
 router.get("/orders", authentication.verifyJWT, viewOrderController);
 
+router.get("/orders", authentication.verifyJWT, viewOrdersController);
 // Mark an order as complete
 router.patch("/id/:id/complete", authentication.verifyJWT,
    completeOrderController);

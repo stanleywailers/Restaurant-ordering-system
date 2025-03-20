@@ -1,10 +1,10 @@
-import {Request, Response} from "express";
-import  Category  from '../models/category';
+import { Request, Response } from "express";
 import fs from 'fs';
 import multer from "multer";
 import path from "path";
-import {getImageUrl} from "./image.helper";
+import Category from '../models/category';
 import Dish from "../models/dish";
+import { getImageUrl } from "./image.helper";
 
 // configures how the files are gonna be stored
 const multerConfig = multer.diskStorage({
@@ -12,6 +12,7 @@ const multerConfig = multer.diskStorage({
                            callback: (error: Error | null, destination: string) => void) {
         callback(null, 'uploads/categories');
     },
+    // @ts-ignore
     filename: function (req: Request, file: Express.Multer.File,
                         callback: (error: Error | null, filename: string) => void) {
         callback(null, Date.now() + path.extname(file.originalname));
@@ -26,6 +27,7 @@ const upload = multer({
 // Create a new category with image upload support
 export const createCategoryHelper = async (req: Request, res: Response) => {
     // Use the multer middleware to handle file upload
+    // @ts-ignore
     upload.single('picture')(req, res, async function (err) {
         if (err) {
             return res.status(400).json({ message: 'Error uploading image', timestamp: new Date() });
@@ -63,9 +65,10 @@ export const createCategoryHelper = async (req: Request, res: Response) => {
 export const getAllCategoriesHelper = async (req: Request, res: Response) => {
     try {
         const categories: Category[] = await Category.findAll({
+            include:[{model:Dish}],
             limit: +req.params.limit,
             offset: +req.params.offset,
-            include: [{ model: Dish }],
+           
         }); // Retrieve all categories from the database
         const data: { // Create an array of category data objects with selected properties
             image: string | undefined;
@@ -75,8 +78,9 @@ export const getAllCategoriesHelper = async (req: Request, res: Response) => {
         }[] = categories.map((category) => ({
             id: category.id ? category.id.toString() : "",
             name: category.name,
-            image: getImageUrl(category.image, "category"), // Get the URL of the category image using getImageUrl function
-            dishes:category?.dishes
+            image: getImageUrl(category.image, "category"),
+            dishes: category.dishes
+            // Get the URL of the category image using getImageUrl function
         }));
         res.json(data); // Send the array of category data objects as the response
     } catch (error) {
@@ -110,6 +114,7 @@ export const getCategoryByIdHelper = async (req: Request, res: Response) => {
 // Update an existing category, including the image if provided
 export const updateCategoryHelper = async (req: Request, res: Response) => {
     // Use the multer middleware to handle file upload
+    // @ts-ignore
     upload.single('picture')(req, res, async function (err) {
         if (err) {
             return res.status(400).json({ message: 'Error uploading image', timestamp: new Date() });

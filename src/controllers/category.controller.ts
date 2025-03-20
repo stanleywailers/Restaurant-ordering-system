@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import {
     createCategory,
-    updateCategory,
     deleteCategory,
-    getCategory,
     getAllCategory,
+    getCategory,
+    updateCategory,
 } from "../services/category.service";
 
 // Controller function to create a new category
 export const createCategoryController = async (req: Request, res: Response) => {
     try {
         await createCategory(req, res); // Call the createCategory service function
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };
@@ -20,7 +20,7 @@ export const createCategoryController = async (req: Request, res: Response) => {
 export const updateCategoryController = async (req: Request, res: Response) => {
     try {
         await updateCategory(req, res); // Call the updateCategory service function
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };
@@ -29,7 +29,7 @@ export const updateCategoryController = async (req: Request, res: Response) => {
 export const deleteCategoryController = async (req: Request, res: Response) => {
     try {
         await deleteCategory(req, res); // Call the deleteCategory service function
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };
@@ -38,7 +38,7 @@ export const deleteCategoryController = async (req: Request, res: Response) => {
 export const getCategoryController = async (req: Request, res: Response) => {
     try {
         await getCategory(req, res); // Call the getCategory service function
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };
@@ -47,7 +47,7 @@ export const getCategoryController = async (req: Request, res: Response) => {
 export const getAllCategoryController = async (req: Request, res: Response) => {
     try {
         await getAllCategory(req, res); // Call the getAllCategory service function
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ error: error.message, timestamp: new Date() }); // Send error message if an error occurs
     }
 };

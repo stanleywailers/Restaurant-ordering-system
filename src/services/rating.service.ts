@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import {
     createRatingHelper,
-    updateRatingHelper,
     deleteRatingHelper,
-    getRatingHelper,
     getAllRatingsHelper,
+    getRatingHelper,
+    updateRatingHelper,
 } from "../helpers/rating.helper";
 
 // Controller function to create a new rating
@@ -21,7 +21,7 @@ export const updateRating = async (req: Request, res: Response) => {
 export const getRating = async (req: Request, res: Response) => {
     try {
         await getRatingHelper(req, res); // Call the getRatingHelper function from the helper
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ message: error.message }); // Send error message if an error occurs
     }
 };
@@ -30,7 +30,7 @@ export const getRating = async (req: Request, res: Response) => {
 export const getAllRating = async (req: Request, res: Response) => {
     try {
         await getAllRatingsHelper(req, res); // Call the getAllRatingsHelper function from the helper
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ message: error.message }); // Send error message if an error occurs
     }
 };
@@ -39,7 +39,7 @@ export const getAllRating = async (req: Request, res: Response) => {
 export const deleteRating = async (req: Request, res: Response) => {
     try {
         await deleteRatingHelper(req, res); // Call the deleteRatingHelper function from the helper
-    } catch (error) {
+    } catch (error:any) {
         res.status(400).send({ message: error.message }); // Send error message if an error occurs
     }
 };

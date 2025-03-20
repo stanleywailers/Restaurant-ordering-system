@@ -1,6 +1,5 @@
-import passport from 'passport';
+import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
 
 declare global {
     namespace Express {
@@ -13,24 +12,29 @@ declare global {
 const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
 
     let token : any = req.headers["authorization"];
+    console.log(token, String(process.env.JWT_SECRET))
     let arr: string[] = [];
     if(!token){
         res.send("Need a token!");
     }else {
         arr =  token.split("Bearer ");
         token = arr[1];
-        jwt.verify(token, String(process.env.JWT_SECRET),  (err: Error | null,
-                                         decoded: JwtPayload | undefined) => {
-            if (err){
-                res.status(401).json({ status: "error", code: "unauthorized" });
-            }else if (decoded){
-              
-                req.userId = decoded.userId;
+        jwt.verify(token, String(process.env.JWT_SECRET), (err:any, decoded:any) => {
+            if (err) {
+                return res.status(401).json({ status: "error", code: "unauthorized" });
+            }
+          
+            if (decoded && typeof decoded === "object" && "userId" in decoded) {
+                req.userId = (decoded as JwtPayload).userId;
                 next();
+            } else {
+                return res.status(401).json({ status: "error", code: "invalid_token" });
             }
         });
+        
     }
 
 };
 
-export { verifyJWT }
+export { verifyJWT };
+
